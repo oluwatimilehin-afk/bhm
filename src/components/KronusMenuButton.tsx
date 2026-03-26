@@ -14,30 +14,22 @@ type KronusMenuButtonProps = {
 };
 
 type MenuItem = {
-  eyebrow: string;
   label: string;
   to: string;
-  description: string;
 };
 
 const menuItems: MenuItem[] = [
   {
-    eyebrow: "Overview",
     label: "Home",
     to: "/",
-    description: "Return to the main Kronus story and service overview.",
   },
   {
-    eyebrow: "Selected Work",
     label: "Case Studies",
     to: "/case-studies",
-    description: "Review high-stakes communications and reputation outcomes.",
   },
   {
-    eyebrow: "Direct Access",
     label: "Contact Us",
     to: "/contact-us",
-    description: "Open a confidential conversation with the team.",
   },
 ];
 
@@ -54,7 +46,6 @@ export default function KronusMenuButton({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const iconWrapperRef = useRef<HTMLSpanElement>(null);
   const menuRef = useRef<HTMLElement>(null);
-  const introRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Array<HTMLAnchorElement | null>>([]);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const location = useLocation();
@@ -66,10 +57,9 @@ export default function KronusMenuButton({
       const menu = menuRef.current;
       const button = buttonRef.current;
       const iconWrapper = iconWrapperRef.current;
-      const intro = introRef.current;
       const items = itemRefs.current.filter(Boolean) as HTMLElement[];
 
-      if (!menu || !button || !iconWrapper || !intro || !items.length) {
+      if (!menu || !button || !iconWrapper || !items.length) {
         return;
       }
 
@@ -79,19 +69,18 @@ export default function KronusMenuButton({
         gsap.set(menu, { clearProps: "all" });
         gsap.set(button, { clearProps: "transform" });
         gsap.set(iconWrapper, { clearProps: "transform" });
-        gsap.set(intro, { clearProps: "all" });
         gsap.set(items, { clearProps: "all" });
       });
 
       matchMedia.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.set(menu, {
           autoAlpha: 0,
-          y: -18,
+          y: -10,
+          scale: 0.98,
           pointerEvents: "none",
           transformOrigin: "top left",
         });
-        gsap.set(intro, { autoAlpha: 0, y: 12 });
-        gsap.set(items, { autoAlpha: 0, y: 18 });
+        gsap.set(items, { autoAlpha: 0, y: 10 });
 
         const timeline = gsap.timeline({ paused: true });
 
@@ -101,8 +90,9 @@ export default function KronusMenuButton({
             {
               autoAlpha: 1,
               y: 0,
+              scale: 1,
               pointerEvents: "auto",
-              duration: 0.38,
+              duration: 0.26,
               ease: MOTION.ease.out,
             },
             0,
@@ -111,7 +101,7 @@ export default function KronusMenuButton({
             button,
             {
               y: -2,
-              duration: 0.3,
+              duration: 0.24,
               ease: MOTION.ease.smooth,
             },
             0,
@@ -120,32 +110,22 @@ export default function KronusMenuButton({
             iconWrapper,
             {
               rotate: 90,
-              scale: 0.96,
-              duration: 0.38,
+              scale: 0.94,
+              duration: 0.26,
               ease: MOTION.ease.out,
             },
             0,
-          )
-          .to(
-            intro,
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.34,
-              ease: MOTION.ease.out,
-            },
-            0.08,
           )
           .to(
             items,
             {
               autoAlpha: 1,
               y: 0,
-              duration: 0.42,
-              stagger: MOTION.stagger.tight,
+              duration: 0.24,
+              stagger: 0.04,
               ease: MOTION.ease.out,
             },
-            0.12,
+            0.04,
           );
 
         timelineRef.current = timeline;
@@ -267,21 +247,9 @@ export default function KronusMenuButton({
         id={menuId}
         aria-label="Primary"
         aria-hidden={!isOpen}
-        className="pointer-events-none absolute left-0 top-full mt-5 w-[min(24rem,calc(100vw-2.5rem))] overflow-hidden border border-white/18 bg-[linear-gradient(180deg,rgba(7,16,22,0.98)_0%,rgba(10,23,31,0.96)_56%,rgba(18,40,48,0.94)_100%)] p-4 text-white opacity-0 shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-md sm:p-5"
+        className="pointer-events-none absolute left-0 top-full mt-3 w-[min(15rem,calc(100vw-2.5rem))] overflow-hidden rounded-[1.25rem] border border-white/12 bg-[rgba(9,19,25,0.96)] p-2 text-white opacity-0 shadow-[0_18px_42px_rgba(0,0,0,0.28)] backdrop-blur-md"
       >
-        <div
-          ref={introRef}
-          className="rounded-[1.75rem] border border-white/10 bg-white/6 p-4 sm:p-5"
-        >
-          <p className="text-[0.68rem] uppercase tracking-[0.28em] text-[#b7cbcd]">
-            Kronus Communications
-          </p>
-          <p className="mt-3 max-w-[14rem] font-serif text-[1.9rem] leading-[0.92] tracking-[-0.06em] text-[#f2ede6]">
-            Navigate the conversation.
-          </p>
-        </div>
-
-        <div className="mt-4 space-y-3">
+        <div className="space-y-1">
           {menuItems.map((item, index) => (
             <NavLink
               key={item.to}
@@ -293,48 +261,32 @@ export default function KronusMenuButton({
               onClick={() => setOpenPathname(null)}
               className={({ isActive }) =>
                 [
-                  "group block rounded-[1.5rem] border px-4 py-4 transition-colors sm:px-5",
+                  "group flex items-center justify-between rounded-[0.95rem] border px-3 py-3 text-sm transition-colors",
                   isActive
-                    ? "border-[#efe7dc] bg-[#f3ede3] text-[#0f1820]"
-                    : "border-white/10 bg-white/5 hover:border-white/25 hover:bg-white/10",
+                    ? "border-[#e8dfd3] bg-[#f3ede3] text-[#0f1820]"
+                    : "border-transparent bg-transparent text-white/88 hover:border-white/12 hover:bg-white/6",
                 ].join(" ")
               }
             >
               {({ isActive }) => (
                 <>
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p
-                        className={[
-                          "text-[0.68rem] uppercase tracking-[0.24em]",
-                          isActive ? "text-[#63727b]" : "text-white/55",
-                        ].join(" ")}
-                      >
-                        {item.eyebrow}
-                      </p>
-                      <p className="mt-2 font-serif text-[1.45rem] leading-none tracking-[-0.05em]">
-                        {item.label}
-                      </p>
-                    </div>
-
-                    <span
-                      className={[
-                        "mt-1 text-[0.78rem] uppercase tracking-[0.18em]",
-                        isActive ? "text-[#7a878d]" : "text-white/38",
-                      ].join(" ")}
-                    >
-                      0{index + 1}
-                    </span>
-                  </div>
-
-                  <p
+                  <span
                     className={[
-                      "mt-3 max-w-[15rem] text-sm leading-6",
-                      isActive ? "text-[#49575f]" : "text-white/72",
+                      "font-medium uppercase tracking-[0.08em]",
+                      isActive ? "text-[#111922]" : "text-white/92",
                     ].join(" ")}
                   >
-                    {item.description}
-                  </p>
+                    {item.label}
+                  </span>
+
+                  <span
+                    className={[
+                      "text-xs uppercase tracking-[0.18em]",
+                      isActive ? "text-[#5f6d75]" : "text-white/42",
+                    ].join(" ")}
+                  >
+                    0{index + 1}
+                  </span>
                 </>
               )}
             </NavLink>
