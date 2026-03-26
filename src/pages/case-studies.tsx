@@ -1,9 +1,26 @@
 import KronusContactHero from "../components/KronusContactHero";
 import KronusCaseStudiesIntroSection from "../components/KronusCaseStudiesIntroSection";
-import KronusCaseStudiesListSection from "../components/KronusCaseStudiesListSection";
+import KronusCaseStudiesListSection, {
+  type KronusCaseStudy,
+} from "../components/KronusCaseStudiesListSection";
 import { caseStudiesPageContent } from "../content/bhm";
 
 const CaseStudies = () => {
+  const caseStudies: KronusCaseStudy[] = caseStudiesPageContent.studies.map(
+    (study) => ({
+      id: study.id,
+      image: study.image,
+      imageAlt: study.imageAlt,
+      title: study.title,
+      meta: [study.client, study.format].filter(Boolean),
+      challengeQuote: study.campaign,
+      whatWeDidLabel: "Asset Format:",
+      whatWeDid: study.format,
+      result: study.assetLabel,
+      href: study.assetUrl,
+    }),
+  );
+
   return (
     <>
       <KronusContactHero
@@ -14,7 +31,7 @@ const CaseStudies = () => {
       />
       <KronusCaseStudiesIntroSection {...caseStudiesPageContent.intro} />
       <KronusCaseStudiesListSection
-        caseStudies={caseStudiesPageContent.studies}
+        caseStudies={caseStudies}
       />
     </>
   );
