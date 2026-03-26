@@ -6,20 +6,21 @@ import {
   useRefreshOnImages,
 } from "../lib/kronusMotion";
 
-export type PublishedCaseStudy = {
-  id: string;
-  client: string;
-  title: string;
-  campaign: string;
-  format: string;
+export type KronusCaseStudy = {
+  id?: string;
   image: string;
   imageAlt?: string;
-  assetUrl: string;
-  assetLabel: string;
+  title: string;
+  meta?: string[];
+  challengeQuote: string;
+  whatWeDidLabel?: string;
+  whatWeDid: string;
+  result: string;
+  href?: string;
 };
 
 type KronusCaseStudiesListSectionProps = {
-  caseStudies: PublishedCaseStudy[];
+  caseStudies: KronusCaseStudy[];
   className?: string;
 };
 
@@ -65,9 +66,10 @@ export default function KronusCaseStudiesListSection({
         gsap.set(
           [
             "[data-case-study-visual]",
-            "[data-case-study-eyebrow]",
             "[data-case-study-title]",
-            "[data-case-study-copy]",
+            "[data-case-study-meta]",
+            "[data-case-study-quote]",
+            "[data-case-study-block]",
             "[data-case-study-link]",
           ],
           { autoAlpha: 1, clearProps: "all" },
@@ -87,22 +89,23 @@ export default function KronusCaseStudiesListSection({
           const isDesktop = Boolean(context.conditions.desktop);
           const cleanupHover = addHoverTargets(
             sectionRef.current?.querySelectorAll("[data-kronus-lift]") ?? [],
-            { y: isDesktop ? -7 : -4, scale: 1.02 },
+            { y: isDesktop ? -7 : -4, scale: 1.03 },
           );
 
           gsap.utils
             .toArray<HTMLElement>("[data-case-study-card]")
             .forEach((card) => {
               const visual = card.querySelector("[data-case-study-visual]");
-              const eyebrow = card.querySelector("[data-case-study-eyebrow]");
               const title = card.querySelector("[data-case-study-title]");
-              const copy = card.querySelectorAll("[data-case-study-copy]");
+              const meta = card.querySelector("[data-case-study-meta]");
+              const quote = card.querySelector("[data-case-study-quote]");
+              const blocks = card.querySelectorAll("[data-case-study-block]");
               const link = card.querySelector("[data-case-study-link]");
 
               const timeline = gsap.timeline({
                 scrollTrigger: {
                   trigger: card,
-                  start: isDesktop ? "top 78%" : "top 84%",
+                  start: isDesktop ? "top 76%" : "top 84%",
                   once: true,
                 },
                 defaults: { ease: MOTION.ease.out },
@@ -112,41 +115,58 @@ export default function KronusCaseStudiesListSection({
                 .from(
                   visual,
                   {
-                    y: isDesktop ? 34 : 24,
-                    scale: 1.04,
+                    y: isDesktop ? 38 : 26,
+                    scale: 1.06,
                     autoAlpha: 0,
-                    duration: 0.88,
+                    duration: 0.92,
                   },
                   0,
                 )
                 .from(
-                  [eyebrow, title],
+                  title,
                   {
-                    y: 22,
+                    y: 34,
                     autoAlpha: 0,
-                    duration: 0.56,
-                    stagger: 0.06,
+                    duration: 0.74,
                   },
-                  0.16,
+                  0.14,
                 )
                 .from(
-                  copy,
+                  meta,
                   {
                     y: 18,
                     autoAlpha: 0,
-                    duration: 0.48,
-                    stagger: 0.04,
+                    duration: 0.52,
+                  },
+                  0.22,
+                )
+                .from(
+                  quote,
+                  {
+                    x: isDesktop ? -24 : 0,
+                    autoAlpha: 0,
+                    duration: 0.64,
                   },
                   0.28,
                 )
                 .from(
+                  blocks,
+                  {
+                    y: 24,
+                    autoAlpha: 0,
+                    duration: 0.62,
+                    stagger: MOTION.stagger.tight,
+                  },
+                  0.4,
+                )
+                .from(
                   link,
                   {
-                    y: 16,
+                    scale: 0.82,
                     autoAlpha: 0,
-                    duration: 0.44,
+                    duration: 0.42,
                   },
-                  0.38,
+                  0.5,
                 );
             });
 
@@ -177,78 +197,108 @@ export default function KronusCaseStudiesListSection({
       className={`bg-[#f3f0e9] px-6 py-16 text-[#16110b] sm:px-8 md:px-10 lg:px-14 lg:py-20 ${className}`.trim()}
       aria-label="Case studies"
     >
-      <div className="mx-auto grid max-w-[108rem] gap-8 lg:grid-cols-2 xl:gap-10">
-        {caseStudies.map((study) => (
-          <article
-            key={study.id}
-            data-case-study-card
-            className="overflow-hidden border border-[#d6cdbc] bg-[#faf7f0] shadow-[0_18px_40px_rgba(0,0,0,0.05)]"
-          >
-            <a
-              href={study.assetUrl}
-              target="_blank"
-              rel="noreferrer"
-              data-kronus-lift
-              className="group block h-full"
+      <div className="mx-auto max-w-[100rem] space-y-24 lg:space-y-28">
+        {caseStudies.map((study) => {
+          const studyKey = study.id ?? study.title;
+          const isActionableLink = Boolean(
+            study.href && !study.href.startsWith("#"),
+          );
+
+          return (
+            <article
+              key={studyKey}
+              data-case-study-card
+              className="grid gap-7 lg:gap-8 xl:grid-cols-[minmax(21rem,26.5rem)_minmax(0,1fr)_3.5rem] xl:items-start"
             >
               <div
                 data-case-study-visual
-                className="overflow-hidden bg-[#050505]"
+                className="overflow-hidden bg-[#050505] shadow-[0_18px_40px_rgba(0,0,0,0.08)]"
               >
-                <div className="aspect-[16/10] w-full">
+                <div className="aspect-[423/494] w-full">
                   <img
                     src={study.image}
                     alt={study.imageAlt ?? study.title}
-                    className="h-full w-full object-cover grayscale transition-transform duration-500 group-hover:scale-[1.03]"
+                    className="h-full w-full object-cover grayscale"
                     loading="lazy"
                   />
                 </div>
               </div>
 
-              <div className="flex h-full flex-col gap-5 p-6 sm:p-8">
-                <div>
-                  <p
-                    data-case-study-eyebrow
-                    className="text-[0.78rem] font-semibold uppercase tracking-[0.18em] text-[#63584f]"
-                  >
-                    {study.client}
-                  </p>
+              <div className="min-w-0">
+                <h2
+                  data-case-study-title
+                  className="max-w-[58rem] font-serif text-[clamp(2rem,3.9vw,4.1rem)] font-light leading-[0.95] tracking-[-0.06em] text-[#211913]"
+                >
+                  {study.title}
+                </h2>
 
-                  <h2
-                    data-case-study-title
-                    className="mt-3 max-w-[32rem] font-serif text-[clamp(1.85rem,3vw,3rem)] font-light leading-[0.96] tracking-[-0.055em] text-[#201712]"
+                {study.meta?.length ? (
+                  <p
+                    data-case-study-meta
+                    className="mt-4 text-[clamp(1.05rem,1.55vw,1.6rem)] leading-[1.35] tracking-[-0.03em] text-[#28211a]"
                   >
-                    {study.title}
-                  </h2>
+                    {study.meta.map((item, index) => (
+                      <span key={`${studyKey}-meta-${item}`}>
+                        {index > 0 ? " · " : ""}
+                        {item}
+                      </span>
+                    ))}
+                  </p>
+                ) : null}
+
+                <div
+                  data-case-study-quote
+                  className="mt-8 overflow-hidden bg-[linear-gradient(90deg,#070401_0%,#070401_71%,rgba(89,75,51,0.9)_88%,rgba(10,6,2,0.98)_100%)] px-5 py-4 sm:px-7 sm:py-5"
+                >
+                  <p className="max-w-[70rem] font-serif text-[clamp(1.15rem,1.7vw,1.75rem)] font-light italic leading-[1.38] tracking-[-0.025em] text-white/80">
+                    {study.challengeQuote}
+                  </p>
+                </div>
+
+                <div
+                  data-case-study-block
+                  className="mt-8"
+                >
+                  <h3 className="text-[clamp(1.7rem,2.5vw,2.8rem)] font-semibold leading-none tracking-[-0.05em] text-[#15110c]">
+                    {study.whatWeDidLabel ?? "What We Did:"}
+                  </h3>
+                  <p className="mt-3 max-w-[70rem] text-[clamp(1.05rem,1.55vw,1.6rem)] leading-[1.45] tracking-[-0.025em] text-[#5f5953]">
+                    {study.whatWeDid}
+                  </p>
                 </div>
 
                 <p
-                  data-case-study-copy
-                  className="max-w-[35rem] text-[1rem] leading-[1.5] tracking-[-0.02em] text-[#4d4036] sm:text-[1.08rem]"
+                  data-case-study-block
+                  className="mt-8 max-w-[74rem] text-[clamp(1.35rem,2vw,2.2rem)] font-semibold leading-[1.15] tracking-[-0.045em] text-[#2c241d]"
                 >
-                  {study.campaign}
+                  {study.result}
                 </p>
+              </div>
 
-                <div className="mt-auto flex items-center justify-between gap-4 border-t border-[#d9d1c5] pt-5">
-                  <div
-                    data-case-study-copy
-                    className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-[#63584f]"
+              <div className="flex items-start xl:justify-end">
+                {isActionableLink ? (
+                  <a
+                    href={study.href}
+                    data-case-study-link
+                    data-kronus-lift
+                    className="inline-flex h-11 w-11 items-center justify-center text-[#2a221b] transition-transform hover:-translate-y-0.5"
+                    aria-label={`Open case study: ${study.title}`}
                   >
-                    {study.format}
-                  </div>
-
+                    <ArrowUpRightIcon />
+                  </a>
+                ) : (
                   <span
                     data-case-study-link
-                    className="inline-flex items-center gap-2 text-[0.82rem] font-semibold uppercase tracking-[0.14em] text-[#201712]"
+                    className="inline-flex h-11 w-11 items-center justify-center text-[#2a221b]"
+                    aria-hidden="true"
                   >
-                    {study.assetLabel}
                     <ArrowUpRightIcon />
                   </span>
-                </div>
+                )}
               </div>
-            </a>
-          </article>
-        ))}
+            </article>
+          );
+        })}
       </div>
     </section>
   );
