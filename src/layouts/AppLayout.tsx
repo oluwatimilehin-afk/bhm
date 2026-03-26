@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Outlet, useLocation } from "react-router";
 import KronusFooter from "../components/KronusFooter";
+import { getDocumentTitle } from "../content/bhm";
 import { gsap, useGSAP } from "../lib/gsap";
 import { MOTION, scheduleScrollRefresh } from "../lib/kronusMotion";
 
@@ -52,6 +53,7 @@ const AppLayout = () => {
   );
 
   useEffect(() => {
+    document.title = getDocumentTitle(location.pathname);
     scheduleScrollRefresh();
   }, [location.pathname]);
 

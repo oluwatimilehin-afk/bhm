@@ -13,12 +13,12 @@ type KronusCaseStudiesIntroSectionProps = {
 };
 
 export default function KronusCaseStudiesIntroSection({
-  eyebrow = "Intro",
-  leadingText = "Real Stories.",
-  accentText = "Real Stakes.",
-  trailingText = "Real Results.",
-  paragraphOne = "The current Case Studies page lacked clarity and was difficult to scan. This updated layout focuses on storytelling, cohesion, and usability - allowing prospects to understand the full impact of our work without clicking through fragmented tabs or piecing information together.",
-  paragraphTwo = "Our case studies are designed to be read in one continuous flow, making it easy to see who the work was for, what challenge they faced, what we did, and the outcome we delivered.",
+  eyebrow = "Published Work",
+  leadingText = "Campaign Assets.",
+  accentText = "Client Work.",
+  trailingText = "Public Reference.",
+  paragraphOne = "This page brings together public BHM case-study files in a format that is easier to scan than the source archive while still staying faithful to the published material.",
+  paragraphTwo = "Each card links directly to the original BHM asset so visitors can review the public case-study files themselves.",
   className = "",
 }: KronusCaseStudiesIntroSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);

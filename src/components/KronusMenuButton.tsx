@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router";
 import menuIcon from "../assets/menu-icon.svg";
+import { siteNav } from "../content/bhm";
 import { gsap, useGSAP } from "../lib/gsap";
 import { MOTION } from "../lib/kronusMotion";
 
@@ -12,26 +13,6 @@ type KronusMenuButtonProps = {
   iconClassName?: string;
   onMenuClick?: () => void;
 };
-
-type MenuItem = {
-  label: string;
-  to: string;
-};
-
-const menuItems: MenuItem[] = [
-  {
-    label: "Home",
-    to: "/",
-  },
-  {
-    label: "Case Studies",
-    to: "/case-studies",
-  },
-  {
-    label: "Contact Us",
-    to: "/contact-us",
-  },
-];
 
 export default function KronusMenuButton({
   label = "Menu",
@@ -250,7 +231,7 @@ export default function KronusMenuButton({
         className="pointer-events-none absolute left-0 top-full mt-3 w-[min(15rem,calc(100vw-2.5rem))] overflow-hidden rounded-[1.25rem] border border-white/12 bg-[rgba(9,19,25,0.96)] p-2 text-white opacity-0 shadow-[0_18px_42px_rgba(0,0,0,0.28)] backdrop-blur-md"
       >
         <div className="space-y-1">
-          {menuItems.map((item, index) => (
+          {siteNav.map((item, index) => (
             <NavLink
               key={item.to}
               ref={(element) => {

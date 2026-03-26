@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { companyInfo, contactPageContent } from "../content/bhm";
 import { gsap, useGSAP } from "../lib/gsap";
 import { addHoverTargets, MOTION } from "../lib/kronusMotion";
 
@@ -72,10 +73,10 @@ function MessageField({ label }: { label: string }) {
 }
 
 export default function KronusContactFormSection({
-  eyebrow = "Contact Us",
-  title = "Reach Out To Our Team",
-  description = "Let us know what's on your mind and what you want to achieve - we're here for you and will respond promptly.",
-  submitLabel = "Submit",
+  eyebrow = contactPageContent.formEyebrow,
+  title = contactPageContent.formTitle,
+  description = contactPageContent.formDescription,
+  submitLabel = contactPageContent.submitLabel,
   className = "",
   onSubmit,
 }: KronusContactFormSectionProps) {
@@ -90,6 +91,7 @@ export default function KronusContactFormSection({
         gsap.set(
           [
             "[data-contact-intro]",
+            "[data-contact-meta]",
             "[data-contact-field]",
             "[data-contact-submit]",
           ],
@@ -134,6 +136,16 @@ export default function KronusContactFormSection({
               0,
             )
             .from(
+              "[data-contact-meta]",
+              {
+                y: 22,
+                autoAlpha: 0,
+                duration: 0.58,
+                stagger: MOTION.stagger.tight,
+              },
+              0.14,
+            )
+            .from(
               "[data-contact-field]",
               {
                 y: 24,
@@ -141,7 +153,7 @@ export default function KronusContactFormSection({
                 duration: 0.62,
                 stagger: MOTION.stagger.tight,
               },
-              0.18,
+              0.24,
             )
             .from(
               "[data-contact-submit]",
@@ -201,6 +213,75 @@ export default function KronusContactFormSection({
           >
             {description}
           </p>
+
+          <div className="mt-10 space-y-7">
+            <div data-contact-meta>
+              <p className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-[#5d4f43]">
+                Email
+              </p>
+              <a
+                href={`mailto:${companyInfo.email}`}
+                className="mt-2 block text-[1.05rem] leading-[1.4] tracking-[-0.02em] text-[#22160f] transition-opacity hover:opacity-70 sm:text-[1.2rem]"
+              >
+                {companyInfo.email}
+              </a>
+            </div>
+
+            <div data-contact-meta>
+              <p className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-[#5d4f43]">
+                Phone
+              </p>
+              <div className="mt-2 space-y-2">
+                {companyInfo.phones.map((phone) => (
+                  <a
+                    key={phone.label}
+                    href={phone.href}
+                    className="block text-[1.05rem] leading-[1.4] tracking-[-0.02em] text-[#22160f] transition-opacity hover:opacity-70 sm:text-[1.2rem]"
+                  >
+                    {phone.label}: {phone.value}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div data-contact-meta>
+              <p className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-[#5d4f43]">
+                Offices
+              </p>
+              <div className="mt-2 space-y-3">
+                {companyInfo.offices.map((office) => (
+                  <p
+                    key={office.label}
+                    className="text-[1rem] leading-[1.45] tracking-[-0.02em] text-[#4a3d34] sm:text-[1.12rem]"
+                  >
+                    <span className="font-semibold text-[#1f140e]">
+                      {office.label}
+                    </span>{" "}
+                    {office.address}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            <div data-contact-meta>
+              <p className="text-[0.82rem] font-semibold uppercase tracking-[0.18em] text-[#5d4f43]">
+                Follow BHM
+              </p>
+              <div className="mt-2 flex flex-wrap gap-x-6 gap-y-3">
+                {companyInfo.socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[0.95rem] font-medium uppercase tracking-[0.08em] text-[#22160f] transition-opacity hover:opacity-70 sm:text-[1rem]"
+                  >
+                    {social.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="xl:border-l xl:border-[#978d82] xl:pl-14 2xl:pl-16">
@@ -209,20 +290,20 @@ export default function KronusContactFormSection({
             onSubmit={onSubmit ?? ((event) => event.preventDefault())}
           >
             <UnderlineField
-              label="Name"
+              label="Full Name"
               required
             />
             <UnderlineField
-              label="Your Email"
+              label="Work Email"
               type="email"
               required
             />
             <UnderlineField
-              label="Your Phone"
+              label="Phone Number"
               type="tel"
               required
             />
-            <MessageField label="Your Message" />
+            <MessageField label="What do you need support with?" />
 
             <div className="flex justify-start pt-2 sm:pt-4 lg:justify-end">
               <button

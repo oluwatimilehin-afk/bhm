@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Link } from "react-router";
 import defaultBackgroundImage from "../assets/contact-hero-bg.png";
 import { gsap, useGSAP } from "../lib/gsap";
 import { addHoverTargets, MOTION } from "../lib/kronusMotion";
@@ -9,10 +10,9 @@ type KronusContactHeroProps = {
   paragraph?: string;
   backgroundImage?: string;
   menuLabel?: string;
-  contactLabel?: string;
+  actionLabel?: string;
+  actionHref?: string;
   className?: string;
-  onMenuClick?: () => void;
-  onContactClick?: () => void;
 };
 
 const gradientOverlays = [
@@ -47,15 +47,47 @@ function splitTitle(title: string) {
   return { primary, accent };
 }
 
+function ActionLink({
+  href,
+  label,
+}: {
+  href: string;
+  label: string;
+}) {
+  const className =
+    "inline-flex min-h-[4.25rem] items-center justify-center border border-black bg-[#f3ede3] px-5 text-center text-sm font-medium uppercase tracking-[0.08em] text-black underline decoration-[1.5px] underline-offset-[0.32em] shadow-[0_8px_30px_rgba(0,0,0,0.16)] transition-transform hover:-translate-y-0.5 sm:px-8 sm:text-[1.05rem]";
+
+  if (href.startsWith("/")) {
+    return (
+      <Link
+        to={href}
+        data-kronus-lift
+        className={className}
+      >
+        {label}
+      </Link>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      data-kronus-lift
+      className={className}
+    >
+      {label}
+    </a>
+  );
+}
+
 export default function KronusContactHero({
   title,
   paragraph,
   backgroundImage = defaultBackgroundImage,
   menuLabel = "Menu",
-  contactLabel = "Contact us",
+  actionLabel = "Contact BHM",
+  actionHref = "/contact-us",
   className = "",
-  onMenuClick,
-  onContactClick,
 }: KronusContactHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const { primary, accent } = splitTitle(title);
@@ -176,21 +208,16 @@ export default function KronusContactHero({
         >
           <KronusMenuButton
             label={menuLabel}
-            onMenuClick={onMenuClick}
             buttonClassName="group inline-flex items-center gap-5 text-left transition-opacity hover:opacity-90"
             iconWrapperClassName="grid h-[4.25rem] w-[4.25rem] place-items-center border border-white/20 bg-[#f2ede6] shadow-[0_8px_30px_rgba(0,0,0,0.18)]"
             labelClassName="text-lg uppercase tracking-[0.08em] text-white/95 sm:text-[1.55rem]"
             iconClassName="h-6 w-6"
           />
 
-          <button
-            type="button"
-            onClick={onContactClick}
-            data-kronus-lift
-            className="inline-flex min-h-[4.25rem] items-center justify-center border border-black bg-[#f3ede3] px-5 text-center text-sm font-medium uppercase tracking-[0.08em] text-black underline decoration-[1.5px] underline-offset-[0.32em] shadow-[0_8px_30px_rgba(0,0,0,0.16)] transition-transform hover:-translate-y-0.5 sm:px-8 sm:text-[1.05rem]"
-          >
-            {contactLabel}
-          </button>
+          <ActionLink
+            href={actionHref}
+            label={actionLabel}
+          />
         </div>
 
         <div className="flex flex-1 items-center justify-center py-12 sm:py-14 lg:py-16">

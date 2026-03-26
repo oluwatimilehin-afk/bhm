@@ -1,22 +1,12 @@
 import { useRef } from "react";
+import { Link } from "react-router";
 import heroImage from "../assets/hero-building.png";
+import { homeHeroContent } from "../content/bhm";
 import { gsap, useGSAP } from "../lib/gsap";
 import { addHoverTargets, MOTION } from "../lib/kronusMotion";
 import KronusMenuButton from "./KronusMenuButton";
 
-type KronusHeaderProps = {
-  onMenuClick?: () => void;
-  onPrimaryClick?: () => void;
-  onSecondaryClick?: () => void;
-  onContactClick?: () => void;
-};
-
-export default function KronusHeader({
-  onMenuClick,
-  onPrimaryClick,
-  onSecondaryClick,
-  onContactClick,
-}: KronusHeaderProps) {
+export default function KronusHeader() {
   const headerRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -143,20 +133,18 @@ export default function KronusHeader({
           className="flex items-start justify-between gap-6"
         >
           <KronusMenuButton
-            onMenuClick={onMenuClick}
             buttonClassName="group inline-flex items-center gap-5 text-left text-white transition-opacity hover:opacity-90"
             iconWrapperClassName="grid h-[4rem] w-[4rem] place-items-center border border-white/15 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.18)]"
             labelClassName="text-lg uppercase tracking-[0.08em] text-white/95 sm:text-[1.25rem]"
           />
 
-          <button
-            type="button"
-            onClick={onContactClick}
+          <Link
+            to={homeHeroContent.topActionHref}
             data-kronus-lift
             className="inline-flex min-h-[4rem] items-center justify-center border border-black bg-[#f3ede3] px-5 text-center text-sm font-medium uppercase tracking-[0.08em] text-black underline decoration-[1.5px] underline-offset-[0.32em] shadow-[0_8px_30px_rgba(0,0,0,0.16)] transition-transform hover:-translate-y-0.5 sm:px-8 sm:text-[0.9rem]"
           >
-            Contact us
-          </button>
+            {homeHeroContent.topActionLabel}
+          </Link>
         </div>
 
         <div className="flex flex-1 items-center py-12 sm:py-16 lg:py-20">
@@ -169,9 +157,9 @@ export default function KronusHeader({
                   data-kronus-hero-line
                   className="block font-serif text-[0.88em] font-light italic tracking-[-0.05em]"
                 >
-                  Cut through{" "}
+                  {homeHeroContent.lineOneLead}{" "}
                   <span className="font-sans text-[0.92em] not-italic font-semibold">
-                    the clutter.
+                    {homeHeroContent.lineOneAccent}
                   </span>
                 </span>
               </span>
@@ -180,9 +168,9 @@ export default function KronusHeader({
                   data-kronus-hero-line
                   className="block font-sans text-[0.88em] font-semibold tracking-[-0.055em]"
                 >
-                  Control{" "}
+                  {homeHeroContent.lineTwoLead}{" "}
                   <span className="font-serif font-light italic tracking-[-0.05em] text-white/92">
-                    the conversation.
+                    {homeHeroContent.lineTwoAccent}
                   </span>
                 </span>
               </span>
@@ -192,35 +180,31 @@ export default function KronusHeader({
               data-kronus-hero-copy
               className="mt-8 w-full max-w-none text-balance text-base leading-[1.55] text-white/86 sm:text-lg md:text-[1.5rem] md:leading-[1.5]"
             >
-              Kronus Communications is your strategic PR partner for the modern
-              era. We provide full-stack architecture for crisis communications,
-              predictive intelligence, and resilient reputation management.
+              {homeHeroContent.description}
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4 sm:gap-6">
-              <button
-                type="button"
-                onClick={onPrimaryClick}
+              <Link
+                to={homeHeroContent.primaryCta.href}
                 data-kronus-hero-cta
                 data-kronus-lift
                 className="inline-flex min-h-[4rem] items-center justify-center border border-white px-6 text-base font-semibold uppercase tracking-[-0.02em] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)] transition-colors hover:bg-white hover:text-[#071016] sm:min-h-[4.15rem] sm:px-10 sm:text-[1.1rem]"
               >
                 <span className="underline decoration-[1.5px] underline-offset-[0.38em]">
-                  Meet with us
+                  {homeHeroContent.primaryCta.label}
                 </span>
-              </button>
+              </Link>
 
-              <button
-                type="button"
-                onClick={onSecondaryClick}
+              <Link
+                to={homeHeroContent.secondaryCta.href}
                 data-kronus-hero-cta
                 data-kronus-lift
                 className="inline-flex min-h-[4rem] items-center justify-center border border-white px-6 text-base font-semibold uppercase tracking-[-0.02em] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.18)] transition-colors hover:bg-white hover:text-[#071016] sm:min-h-[4.15rem] sm:px-10 sm:text-[1.1rem]"
               >
                 <span className="underline decoration-[1.5px] underline-offset-[0.38em]">
-                  I need help now
+                  {homeHeroContent.secondaryCta.label}
                 </span>
-              </button>
+              </Link>
             </div>
           </div>
         </div>

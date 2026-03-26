@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Link } from "react-router";
+import { companyInfo, footerContent } from "../content/bhm";
 import { gsap, useGSAP } from "../lib/gsap";
 import { addHoverTargets, MOTION } from "../lib/kronusMotion";
 
@@ -8,34 +9,10 @@ type FooterLink = {
   href: string;
 };
 
-const usefulLinks: FooterLink[] = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "#about" },
-  { label: "Case Studies", href: "/case-studies" },
-  { label: "Contact Us", href: "/contact-us" },
-  { label: "Press & Blog", href: "#press" },
-];
-
-const services: FooterLink[] = [
-  {
-    label: "Public Relations & Crisis Communications",
-    href: "#public-relations",
-  },
-  { label: "Narrative Intelligence", href: "#narrative-intelligence" },
-  { label: "Digital Reputation Management", href: "#digital-reputation" },
-  { label: "Talent Representation", href: "#talent-representation" },
-];
-
-const legalLinks: FooterLink[] = [
-  { label: "Privacy Policy", href: "#privacy-policy" },
-  { label: "Terms of Service", href: "#terms-of-service" },
-  { label: "Cookies Settings", href: "#cookies-settings" },
-];
-
 function SocialIcon({
   kind,
 }: {
-  kind: "facebook" | "instagram" | "linkedin" | "x";
+  kind: "facebook" | "instagram" | "linkedin" | "x" | "youtube";
 }) {
   if (kind === "facebook") {
     return (
@@ -97,6 +74,19 @@ function SocialIcon({
     );
   }
 
+  if (kind === "youtube") {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        className="h-6 w-6"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d="M23.5 7.2A3.1 3.1 0 0 0 21.3 5c-1.9-.5-9.3-.5-9.3-.5S4.6 4.5 2.7 5A3.1 3.1 0 0 0 .5 7.2 32.9 32.9 0 0 0 0 12a32.9 32.9 0 0 0 .5 4.8A3.1 3.1 0 0 0 2.7 19c1.9.5 9.3.5 9.3.5s7.4 0 9.3-.5a3.1 3.1 0 0 0 2.2-2.2A32.9 32.9 0 0 0 24 12a32.9 32.9 0 0 0-.5-4.8ZM9.6 15.4V8.6L15.6 12l-6 3.4Z" />
+      </svg>
+    );
+  }
+
   return (
     <svg
       viewBox="0 0 24 24"
@@ -105,18 +95,50 @@ function SocialIcon({
       aria-hidden="true"
     >
       <path
-        d="M4 4L20 20"
+        d="M6 5L18 19"
         stroke="currentColor"
-        strokeWidth="2.1"
+        strokeWidth="2"
         strokeLinecap="round"
       />
       <path
-        d="M20 4L4 20"
+        d="M18 5L6 19"
         stroke="currentColor"
-        strokeWidth="2.1"
+        strokeWidth="2"
         strokeLinecap="round"
       />
     </svg>
+  );
+}
+
+function FooterAnchor({
+  href,
+  label,
+}: FooterLink) {
+  const className =
+    "text-[1rem] leading-[1.35] tracking-[-0.03em] text-[#f1ece5]/94 transition-opacity hover:opacity-70 sm:text-[1.15rem]";
+
+  if (href.startsWith("/")) {
+    return (
+      <Link
+        to={href}
+        data-footer-interactive
+        className={className}
+      >
+        {label}
+      </Link>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      data-footer-interactive
+      className={className}
+    >
+      {label}
+    </a>
   );
 }
 
@@ -140,23 +162,7 @@ function LinkColumn({
       <ul className="mt-7 space-y-5">
         {links.map((link) => (
           <li key={link.label}>
-            {link.href.startsWith("/") ? (
-              <Link
-                to={link.href}
-                data-footer-interactive
-                className="text-[1.05rem] leading-[1.35] tracking-[-0.03em] text-[#f1ece5]/94 transition-opacity hover:opacity-70 sm:text-[1.25rem]"
-              >
-                {link.label}
-              </Link>
-            ) : (
-              <button
-                type="button"
-                disabled
-                className="cursor-default text-[1.05rem] leading-[1.35] tracking-[-0.03em] text-[#f1ece5]/70 sm:text-[1.25rem]"
-              >
-                {link.label}
-              </button>
-            )}
+            <FooterAnchor {...link} />
           </li>
         ))}
       </ul>
@@ -247,89 +253,68 @@ export default function KronusFooter() {
               data-footer-group
               className="max-w-[35rem]"
             >
-              <div className="flex flex-col items-start gap-8 sm:flex-row sm:items-end sm:gap-10 lg:gap-12"></div>
-
-              <p className="mt-8 max-w-[32rem] text-balance text-[1.1rem] leading-[1.5] tracking-[-0.03em] text-[#f3ede6]/92 sm:text-[1.3rem] lg:mt-10 lg:text-[1.45rem]">
-                Explore our sister company for deeper intelligence, risk
-                management, security and logistics solutions.
+              <p className="max-w-[30rem] text-[2rem] font-semibold leading-[0.95] tracking-[-0.06em] text-[#f5efe7] sm:text-[2.4rem]">
+                {companyInfo.name}
               </p>
+
+              <p className="mt-8 max-w-[32rem] text-balance text-[1.05rem] leading-[1.5] tracking-[-0.03em] text-[#f3ede6]/92 sm:text-[1.22rem] lg:mt-10 lg:text-[1.35rem]">
+                {footerContent.summary}
+              </p>
+
+              <div className="mt-8 space-y-3 text-[1rem] leading-[1.45] tracking-[-0.02em] text-[#efe7dd]/88 sm:text-[1.08rem]">
+                {companyInfo.phones.map((phone) => (
+                  <a
+                    key={phone.label}
+                    href={phone.href}
+                    data-footer-interactive
+                    className="block transition-opacity hover:opacity-70"
+                  >
+                    {phone.label}: {phone.value}
+                  </a>
+                ))}
+                <a
+                  href={`mailto:${companyInfo.email}`}
+                  data-footer-interactive
+                  className="block transition-opacity hover:opacity-70"
+                >
+                  {companyInfo.email}
+                </a>
+              </div>
             </div>
 
             <LinkColumn
-              title="Useful Links"
-              links={usefulLinks}
+              title="This Site"
+              links={footerContent.localLinks}
               maxWidthClass="max-w-[14rem]"
             />
 
             <LinkColumn
-              title="Services"
-              links={services}
+              title="BHM Pages"
+              links={footerContent.bhmLinks}
               maxWidthClass="max-w-[22rem]"
             />
 
             <div
               data-footer-group
-              className="max-w-[28rem] xl:justify-self-end"
+              className="max-w-[30rem] xl:justify-self-end"
             >
               <h3 className="text-[1rem] font-medium uppercase tracking-[0.05em] text-[#f4efe7] sm:text-[1.15rem]">
-                Subscribe
+                Offices
               </h3>
-              <p className="mt-7 max-w-[24rem] text-balance text-[1.05rem] leading-[1.45] tracking-[-0.03em] text-[#f3ede6]/92 sm:text-[1.25rem]">
-                Subscribe for a first look at exclusive offers, industry
-                insights, and updates.
-              </p>
 
-              <form
-                className="mt-8"
-                onSubmit={(event) => event.preventDefault()}
-              >
-                <label
-                  className="sr-only"
-                  htmlFor="footer-email"
-                >
-                  Enter your email
-                </label>
-                <div className="flex min-h-[4.4rem] items-stretch border-[3px] border-[#f4efe7] bg-[#ebe8e4] sm:min-h-[4.8rem] lg:min-h-[5rem]">
-                  <input
-                    id="footer-email"
-                    type="email"
-                    placeholder="Enter your email"
-                    className="min-w-0 flex-1 bg-transparent px-5 text-[0.98rem] tracking-[-0.03em] text-[#2d2218] placeholder:text-[#6c625a] focus:outline-none sm:px-6 sm:text-[1.15rem]"
-                  />
-                  <button
-                    type="submit"
-                    data-footer-interactive
-                    className="grid w-[4.75rem] place-items-center bg-[#0c0805] text-[#f7f2eb] transition-colors hover:bg-[#19110b] sm:w-[5rem]"
-                    aria-label="Submit email"
+              <div className="mt-7 space-y-5">
+                {companyInfo.offices.map((office) => (
+                  <p
+                    key={office.label}
+                    className="text-[1rem] leading-[1.45] tracking-[-0.02em] text-[#f3ede6]/92 sm:text-[1.1rem]"
                   >
-                    <svg
-                      aria-hidden="true"
-                      viewBox="0 0 24 24"
-                      className="h-7 w-7"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M4 12H19"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="square"
-                      />
-                      <path
-                        d="M13 6L19 12L13 18"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="square"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </form>
-
-              <p className="mt-8 max-w-[27rem] text-[0.8rem] leading-[1.55] tracking-[-0.01em] text-[#e2d8cb]/90 sm:text-[0.9rem] lg:text-[0.95rem]">
-                By subscribing you agree with our Privacy Policy and provide
-                consent to receive updates from our company.
-              </p>
+                    <span className="font-semibold text-[#f8f2eb]">
+                      {office.label}
+                    </span>{" "}
+                    {office.address}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -343,55 +328,32 @@ export default function KronusFooter() {
             className="mt-9 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-center lg:justify-between lg:gap-10"
           >
             <div className="text-[0.9rem] leading-[1.4] tracking-[-0.02em] text-[#efe7dd]/92 sm:text-[1.05rem]">
-              &copy; 2025 Kronus Communications. All rights reserved.
+              &copy; 2026 BHM. A BHM Holdings Company.
             </div>
 
             <div className="flex flex-wrap items-center gap-x-10 gap-y-4 lg:flex-1 lg:justify-center">
-              {legalLinks.map((link) => (
-                <button
+              {footerContent.resourceLinks.map((link) => (
+                <FooterAnchor
                   key={link.label}
-                  type="button"
-                  disabled
-                  className="cursor-default text-[0.9rem] tracking-[-0.02em] text-[#efe7dd]/70 underline decoration-[1px] underline-offset-[0.5em] sm:text-[1.05rem]"
-                >
-                  {link.label}
-                </button>
+                  {...link}
+                />
               ))}
             </div>
 
             <div className="flex items-center gap-7 text-[#f6efe5] sm:gap-8">
-              <button
-                type="button"
-                disabled
-                aria-label="Facebook"
-                className="cursor-default opacity-70"
-              >
-                <SocialIcon kind="facebook" />
-              </button>
-              <button
-                type="button"
-                disabled
-                aria-label="Instagram"
-                className="cursor-default opacity-70"
-              >
-                <SocialIcon kind="instagram" />
-              </button>
-              <button
-                type="button"
-                disabled
-                aria-label="LinkedIn"
-                className="cursor-default opacity-70"
-              >
-                <SocialIcon kind="linkedin" />
-              </button>
-              <button
-                type="button"
-                disabled
-                aria-label="X"
-                className="cursor-default opacity-70"
-              >
-                <SocialIcon kind="x" />
-              </button>
+              {companyInfo.socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={social.label}
+                  data-footer-interactive
+                  className="transition-opacity hover:opacity-70"
+                >
+                  <SocialIcon kind={social.kind} />
+                </a>
+              ))}
             </div>
           </div>
         </div>

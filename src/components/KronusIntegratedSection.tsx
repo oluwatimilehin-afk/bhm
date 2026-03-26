@@ -1,30 +1,9 @@
 import { useRef } from "react";
+import { integratedSectionContent } from "../content/bhm";
 import { gsap, useGSAP } from "../lib/gsap";
 import { addHoverTargets, MOTION } from "../lib/kronusMotion";
 
-type ServiceItem = {
-  title: string;
-  emphasis: string;
-  href?: string;
-};
-
-const services: ServiceItem[] = [
-  {
-    title: "Public Relations &",
-    emphasis: "Crisis Communications",
-    href: "#public-relations",
-  },
-  {
-    title: "Narrative",
-    emphasis: "Intelligence",
-    href: "#narrative-intelligence",
-  },
-  {
-    title: "Digital Reputation",
-    emphasis: "Management",
-    href: "#digital-reputation",
-  },
-];
+type ServiceItem = (typeof integratedSectionContent.services)[number];
 
 function ArrowIcon() {
   return (
@@ -51,13 +30,15 @@ function ArrowIcon() {
   );
 }
 
-function ServiceCard({ title, emphasis, href }: ServiceItem) {
+function ServiceCard({ title, emphasis, summary, href }: ServiceItem) {
   return (
     <a
       href={href}
+      target="_blank"
+      rel="noreferrer"
       data-integrated-card
       data-kronus-lift
-      className="group flex min-h-20 flex-col justify-between border-b border-[#9c9388] pb-6 text-[#23170f] transition-opacity duration-200 hover:opacity-75"
+      className="group flex min-h-[17rem] flex-col justify-between border-b border-[#9c9388] pb-6 text-[#23170f] transition-opacity duration-200 hover:opacity-75"
     >
       <div className="flex justify-end">
         <span
@@ -74,6 +55,9 @@ function ServiceCard({ title, emphasis, href }: ServiceItem) {
         </h3>
         <p className="mt-2 font-serif text-[1.7rem] font-light italic leading-[1.02] tracking-[-0.04em] sm:text-[1.55rem]">
           {emphasis}
+        </p>
+        <p className="mt-5 max-w-[21rem] text-[0.98rem] leading-[1.5] tracking-[-0.02em] text-[#51443b] sm:text-[1.05rem]">
+          {summary}
         </p>
       </div>
     </a>
@@ -177,9 +161,9 @@ export default function KronusIntegratedSection() {
         <div className="mx-auto max-w-232 text-center">
           <p
             data-integrated-intro
-            className="text-balance text-[1.05rem] leading-none tracking-[-0.04em] sm:text-[1.7rem] md:text-[1.9rem]"
+            className="text-balance text-[1.05rem] leading-none tracking-[-0.04em] sm:text-[1.4rem] md:text-[1.55rem]"
           >
-            A Public Relations Firm Built For More
+            {integratedSectionContent.eyebrow}
           </p>
 
           <h2
@@ -187,10 +171,10 @@ export default function KronusIntegratedSection() {
             className="mt-6 text-balance leading-[0.92] tracking-[-0.065em] text-[#1d130d]"
           >
             <span className="font-sans text-[clamp(2.5rem,6.2vw,5.2rem)] font-semibold">
-              Integrated
+              {integratedSectionContent.headingLead}
             </span>
             <span className="ml-2 font-serif text-[clamp(2.5rem,6.2vw,5.2rem)] font-light italic">
-              For Dominance
+              {integratedSectionContent.headingAccent}
             </span>
           </h2>
 
@@ -198,13 +182,12 @@ export default function KronusIntegratedSection() {
             data-integrated-intro
             className="mx-auto mt-8 max-w-180 text-balance text-[1rem] leading-[1.45] tracking-[-0.025em] text-[#3d3129] sm:text-[1.2rem] md:text-[1.4rem]"
           >
-            In an era of noise, being heard is a baseline - being understood is
-            the win.
+            {integratedSectionContent.description}
           </p>
         </div>
 
         <div className="mt-16 grid gap-8 lg:mt-24 lg:grid-cols-3 lg:gap-0">
-          {services.map((service, index) => (
+          {integratedSectionContent.services.map((service, index) => (
             <div
               key={service.title}
               className={
