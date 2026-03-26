@@ -1,4 +1,3 @@
-import logo from "../assets/kronus-logo.png";
 import heroImage from "../assets/hero-building.png";
 import menuIcon from "../assets/menu-icon.svg";
 
@@ -47,12 +46,6 @@ export default function KronusHeader({
             </span>
           </button>
 
-          <img
-            src={logo}
-            alt="Kronus Communications"
-            className="hidden w-[18rem] max-w-[32vw] object-contain md:block lg:w-[20rem]"
-          />
-
           <button
             type="button"
             onClick={onContactClick}
@@ -64,13 +57,7 @@ export default function KronusHeader({
 
         <div className="flex flex-1 items-center py-12 sm:py-16 lg:py-20">
           <div className="">
-            <div className="mb-8 md:hidden">
-              <img
-                src={logo}
-                alt="Kronus Communications"
-                className="w-32 max-w-full object-contain"
-              />
-            </div>
+            <div className="mb-8 md:hidden"></div>
 
             <h1 className="w-full max-w-none text-[clamp(2.6rem,7.2vw,6.4rem)] uppercase leading-[0.9] tracking-[-0.04em] text-white">
               <span className="block font-serif text-[0.88em] font-light italic tracking-[-0.05em]">
