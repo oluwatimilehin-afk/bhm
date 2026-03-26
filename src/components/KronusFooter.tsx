@@ -1,4 +1,7 @@
+import { useRef } from "react";
 import { Link } from "react-router";
+import { gsap, useGSAP } from "../lib/gsap";
+import { addHoverTargets, MOTION } from "../lib/kronusMotion";
 
 type FooterLink = {
   label: string;
@@ -127,7 +130,10 @@ function LinkColumn({
   maxWidthClass?: string;
 }) {
   return (
-    <div className={maxWidthClass}>
+    <div
+      data-footer-group
+      className={maxWidthClass}
+    >
       <h3 className="text-[1rem] font-medium uppercase tracking-[0.05em] text-[#f4efe7] sm:text-[1.15rem]">
         {title}
       </h3>
@@ -137,6 +143,7 @@ function LinkColumn({
             {link.href.startsWith("/") ? (
               <Link
                 to={link.href}
+                data-footer-interactive
                 className="text-[1.05rem] leading-[1.35] tracking-[-0.03em] text-[#f1ece5]/94 transition-opacity hover:opacity-70 sm:text-[1.25rem]"
               >
                 {link.label}
@@ -158,14 +165,88 @@ function LinkColumn({
 }
 
 export default function KronusFooter() {
+  const footerRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const matchMedia = gsap.matchMedia();
+
+      matchMedia.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(
+          ["[data-footer-group]", "[data-footer-bottom]", "[data-footer-divider]"],
+          { autoAlpha: 1, clearProps: "all" },
+        );
+      });
+
+      matchMedia.add("(prefers-reduced-motion: no-preference)", () => {
+        const cleanupHover = addHoverTargets(
+          footerRef.current?.querySelectorAll("[data-footer-interactive]") ?? [],
+          { y: -4, scale: 1.012 },
+        );
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: "top 88%",
+            once: true,
+          },
+          defaults: { ease: MOTION.ease.out },
+        })
+          .from(
+            "[data-footer-group]",
+            {
+              y: MOTION.distance.itemEnter,
+              autoAlpha: 0,
+              duration: 0.72,
+              stagger: MOTION.stagger.medium,
+            },
+            0,
+          )
+          .from(
+            "[data-footer-divider]",
+            {
+              scaleX: 0,
+              transformOrigin: "left center",
+              duration: 0.56,
+            },
+            0.28,
+          )
+          .from(
+            "[data-footer-bottom]",
+            {
+              y: 20,
+              autoAlpha: 0,
+              duration: 0.62,
+            },
+            0.36,
+          );
+
+        return () => {
+          cleanupHover();
+        };
+      });
+
+      return () => {
+        matchMedia.revert();
+      };
+    },
+    { scope: footerRef },
+  );
+
   return (
-    <footer className="overflow-hidden bg-[#090603] text-[#f5efe7]">
+    <footer
+      ref={footerRef}
+      className="overflow-hidden bg-[#090603] text-[#f5efe7]"
+    >
       <div className="relative isolate">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_24%_24%,rgba(166,138,93,0.28),transparent_18%),linear-gradient(90deg,rgba(0,0,0,0.96)_0%,rgba(72,58,39,0.9)_24%,rgba(120,103,74,0.26)_37%,rgba(29,21,12,0.9)_49%,rgba(0,0,0,0.97)_62%,rgba(0,0,0,1)_100%)]" />
 
         <div className="relative mx-auto max-w-[1720px] px-5 py-16 sm:px-8 md:px-10 lg:px-14 lg:py-20 xl:py-24">
           <div className="grid gap-14 xl:grid-cols-[minmax(0,1.18fr)_minmax(0,0.48fr)_minmax(0,0.62fr)_minmax(0,0.9fr)] xl:gap-16">
-            <div className="max-w-[35rem]">
+            <div
+              data-footer-group
+              className="max-w-[35rem]"
+            >
               <div className="flex flex-col items-start gap-8 sm:flex-row sm:items-end sm:gap-10 lg:gap-12"></div>
 
               <p className="mt-8 max-w-[32rem] text-balance text-[1.1rem] leading-[1.5] tracking-[-0.03em] text-[#f3ede6]/92 sm:text-[1.3rem] lg:mt-10 lg:text-[1.45rem]">
@@ -186,7 +267,10 @@ export default function KronusFooter() {
               maxWidthClass="max-w-[22rem]"
             />
 
-            <div className="max-w-[28rem] xl:justify-self-end">
+            <div
+              data-footer-group
+              className="max-w-[28rem] xl:justify-self-end"
+            >
               <h3 className="text-[1rem] font-medium uppercase tracking-[0.05em] text-[#f4efe7] sm:text-[1.15rem]">
                 Subscribe
               </h3>
@@ -214,6 +298,7 @@ export default function KronusFooter() {
                   />
                   <button
                     type="submit"
+                    data-footer-interactive
                     className="grid w-[4.75rem] place-items-center bg-[#0c0805] text-[#f7f2eb] transition-colors hover:bg-[#19110b] sm:w-[5rem]"
                     aria-label="Submit email"
                   >
@@ -248,11 +333,17 @@ export default function KronusFooter() {
             </div>
           </div>
 
-          <div className="mt-14 h-px w-full bg-[#b39d79]/70 lg:mt-16" />
+          <div
+            data-footer-divider
+            className="mt-14 h-px w-full bg-[#b39d79]/70 lg:mt-16"
+          />
 
-          <div className="mt-9 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+          <div
+            data-footer-bottom
+            className="mt-9 flex flex-col gap-8 lg:mt-10 lg:flex-row lg:items-center lg:justify-between lg:gap-10"
+          >
             <div className="text-[0.9rem] leading-[1.4] tracking-[-0.02em] text-[#efe7dd]/92 sm:text-[1.05rem]">
-              © 2025 Kronus Communications. All rights reserved.
+              &copy; 2025 Kronus Communications. All rights reserved.
             </div>
 
             <div className="flex flex-wrap items-center gap-x-10 gap-y-4 lg:flex-1 lg:justify-center">
