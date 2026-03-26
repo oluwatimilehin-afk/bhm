@@ -227,7 +227,7 @@ export default function KronusCaseStudiesListSection({
               <div className="min-w-0">
                 <h2
                   data-case-study-title
-                  className="max-w-[58rem] font-serif text-[clamp(2.3rem,4.35vw,4.7rem)] font-light leading-[0.95] tracking-[-0.06em] text-[#211913]"
+                  className="max-w-[58rem] font-serif text-[clamp(2rem,3.9vw,4.1rem)] font-light leading-[0.95] tracking-[-0.06em] text-[#211913]"
                 >
                   {study.title}
                 </h2>
@@ -235,7 +235,7 @@ export default function KronusCaseStudiesListSection({
                 {study.meta?.length ? (
                   <p
                     data-case-study-meta
-                    className="mt-4 text-[clamp(1.2rem,1.8vw,1.8rem)] leading-[1.35] tracking-[-0.03em] text-[#28211a]"
+                    className="mt-4 text-[clamp(1.05rem,1.55vw,1.6rem)] leading-[1.35] tracking-[-0.03em] text-[#28211a]"
                   >
                     {study.meta.map((item, index) => (
                       <span key={`${studyKey}-meta-${item}`}>
@@ -250,7 +250,7 @@ export default function KronusCaseStudiesListSection({
                   data-case-study-quote
                   className="mt-8 overflow-hidden bg-[linear-gradient(90deg,#070401_0%,#070401_71%,rgba(89,75,51,0.9)_88%,rgba(10,6,2,0.98)_100%)] px-5 py-4 sm:px-7 sm:py-5"
                 >
-                  <p className="max-w-[70rem] font-serif text-[clamp(1.35rem,2vw,2rem)] font-light italic leading-[1.38] tracking-[-0.025em] text-white/80">
+                  <p className="max-w-[70rem] font-serif text-[clamp(1.15rem,1.7vw,1.75rem)] font-light italic leading-[1.38] tracking-[-0.025em] text-white/80">
                     {study.challengeQuote}
                   </p>
                 </div>
@@ -259,17 +259,17 @@ export default function KronusCaseStudiesListSection({
                   data-case-study-block
                   className="mt-8"
                 >
-                  <h3 className="text-[clamp(2rem,3vw,3.3rem)] font-semibold leading-none tracking-[-0.05em] text-[#15110c]">
+                  <h3 className="text-[clamp(1.7rem,2.5vw,2.8rem)] font-semibold leading-none tracking-[-0.05em] text-[#15110c]">
                     {study.whatWeDidLabel ?? "What We Did:"}
                   </h3>
-                  <p className="mt-3 max-w-[70rem] text-[clamp(1.2rem,1.8vw,1.85rem)] leading-[1.45] tracking-[-0.025em] text-[#5f5953]">
+                  <p className="mt-3 max-w-[70rem] text-[clamp(1.05rem,1.55vw,1.6rem)] leading-[1.45] tracking-[-0.025em] text-[#5f5953]">
                     {study.whatWeDid}
                   </p>
                 </div>
 
                 <p
                   data-case-study-block
-                  className="mt-8 max-w-[74rem] text-[clamp(1.65rem,2.3vw,2.55rem)] font-semibold leading-[1.15] tracking-[-0.045em] text-[#2c241d]"
+                  className="mt-8 max-w-[74rem] text-[clamp(1.35rem,2vw,2.2rem)] font-semibold leading-[1.15] tracking-[-0.045em] text-[#2c241d]"
                 >
                   {study.result}
                 </p>
