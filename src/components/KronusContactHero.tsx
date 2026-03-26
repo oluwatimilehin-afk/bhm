@@ -1,5 +1,5 @@
-import menuIcon from "../assets/menu-icon.svg";
 import defaultBackgroundImage from "../assets/contact-hero-bg.png";
+import KronusMenuButton from "./KronusMenuButton";
 
 type KronusContactHeroProps = {
   title: string;
@@ -74,24 +74,14 @@ export default function KronusContactHero({
 
       <div className="relative z-10 mx-auto flex min-h-[34rem] max-w-[1720px] flex-col px-5 pb-12 pt-6 sm:px-8 md:px-10 lg:min-h-[43.3125rem] lg:px-14 lg:pb-16 lg:pt-8">
         <div className="flex items-start justify-between gap-6">
-          <button
-            type="button"
-            onClick={onMenuClick}
-            className="group inline-flex items-center gap-5 text-left transition-opacity hover:opacity-90"
-            aria-label="Open navigation menu"
-          >
-            <span className="grid h-[4.25rem] w-[4.25rem] place-items-center border border-white/20 bg-[#f2ede6] shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
-              <img
-                src={menuIcon}
-                alt=""
-                className="h-6 w-6"
-                aria-hidden="true"
-              />
-            </span>
-            <span className="text-lg uppercase tracking-[0.08em] text-white/95 sm:text-[1.55rem]">
-              {menuLabel}
-            </span>
-          </button>
+          <KronusMenuButton
+            label={menuLabel}
+            onMenuClick={onMenuClick}
+            buttonClassName="group inline-flex items-center gap-5 text-left transition-opacity hover:opacity-90"
+            iconWrapperClassName="grid h-[4.25rem] w-[4.25rem] place-items-center border border-white/20 bg-[#f2ede6] shadow-[0_8px_30px_rgba(0,0,0,0.18)]"
+            labelClassName="text-lg uppercase tracking-[0.08em] text-white/95 sm:text-[1.55rem]"
+            iconClassName="h-6 w-6"
+          />
 
           <button
             type="button"

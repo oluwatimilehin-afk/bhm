@@ -1,5 +1,5 @@
 import heroImage from "../assets/hero-building.png";
-import menuIcon from "../assets/menu-icon.svg";
+import KronusMenuButton from "./KronusMenuButton";
 
 type KronusHeaderProps = {
   onMenuClick?: () => void;
@@ -27,24 +27,12 @@ export default function KronusHeader({
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full flex-col px-5 pb-10 pt-6 sm:px-8 md:px-10 lg:px-14 lg:pb-14 lg:pt-12">
         <div className="flex items-start justify-between gap-6">
-          <button
-            type="button"
-            onClick={onMenuClick}
-            className="group inline-flex items-center gap-5 text-left text-white transition-opacity hover:opacity-90"
-            aria-label="Open navigation menu"
-          >
-            <span className="grid h-[4rem] w-[4rem] place-items-center border border-white/15 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.18)]">
-              <img
-                src={menuIcon}
-                alt=""
-                className="h-5 w-5"
-                aria-hidden="true"
-              />
-            </span>
-            <span className="text-lg uppercase tracking-[0.08em] text-white/95 sm:text-[1.25rem]">
-              Menu
-            </span>
-          </button>
+          <KronusMenuButton
+            onMenuClick={onMenuClick}
+            buttonClassName="group inline-flex items-center gap-5 text-left text-white transition-opacity hover:opacity-90"
+            iconWrapperClassName="grid h-[4rem] w-[4rem] place-items-center border border-white/15 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.18)]"
+            labelClassName="text-lg uppercase tracking-[0.08em] text-white/95 sm:text-[1.25rem]"
+          />
 
           <button
             type="button"
