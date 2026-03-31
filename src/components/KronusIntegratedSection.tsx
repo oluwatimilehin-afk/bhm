@@ -101,7 +101,8 @@ export default function KronusIntegratedSection() {
           const timeline = gsap.timeline({
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: isDesktop ? "top 72%" : "top 80%",
+              start: isDesktop ? "top 92%" : "top 96%",
+              invalidateOnRefresh: true,
               once: true,
             },
             defaults: { ease: MOTION.ease.out },
